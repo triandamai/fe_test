@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "headTitle1": "General",
+      "headTitle2": "Dashboards,features & data.",
+      "type": "headtitle",
+      "path": "General",
+      "idx": 1,
+      "privilage": [
+        ""
+      ]
+    },
+    {
+      "path": "/main/soal",
+      "title": "Soal Test",
+      "icon": "git-pull-request",
+      "type": "link",
+      "active": false,
+      "idx": 2,
+      "privilage": [
+        ""
+      ]
+    }
+  ]
+}

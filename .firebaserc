@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "myproject-64aac"
+  },
+
+  "targets": {
+    "myproject-64aac": {
+      "hosting": {
+        "test": ["test-app-1aaa3"]
+      }
+    }
+  }
+}
