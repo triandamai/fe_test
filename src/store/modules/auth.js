@@ -5,33 +5,25 @@
  * 28 Jan 2021 - 10:14
  *
  */
-import ApiService from "../../services/api.service";
-import JwtService from "../../services/jwt.service";
 
+import JwtService from "@/services/jwt.service";
+
+import { auth } from "@/main";
 // action types
-export const LOGIN = "login";
-export const LOGOUT = "logout";
+const LOGIN = "login";
+const LOGOUT = "logout";
 
+export const ACTION_LOGIN = `auth/${LOGIN}`;
+export const ACTION_LOGOUT = `auth/${LOGOUT}`;
 // mutation types
-export const PURGE_AUTH = "logOut";
-export const SET_AUTH = "setUser";
-export const SET_ERROR = "setError";
+const PURGE_AUTH = "logOut";
+const SET_AUTH = "setUser";
 
 const state = {
-  error: false,
-  message: "",
-  user: JwtService.getUser(),
-  isAuthenticated: !!JwtService.getToken()
+  user: JwtService.getUser()
 };
 
-const getters = {
-  currentUser(state) {
-    return state.user;
-  },
-  isAuthenticated(state) {
-    return state.isAuthenticated;
-  }
-};
+const getters = {};
 
 const actions = {
   /***
@@ -41,29 +33,20 @@ const actions = {
    *
    */
   [LOGIN]({ commit }, credentials) {
-    return new Promise((resolve, reject) => {
-      ApiService.post("login", {
-        username: credentials.username,
-        password: credentials.password
-      })
-        .then(res => {
-          // console.log(res);
-          if (res.status == 200 || res.status == 201) {
-            commit(SET_AUTH, res.data);
-
-            resolve({ success: true, message: res.data.message || "Berhasil" });
+    return new Promise(resolve => {
+      auth
+        .signInWithEmailAndPassword(credentials.email, credentials.password)
+        .then(userCredential => {
+          let user = userCredential.user;
+          if (user) {
+            resolve({ user: user, success: true, message: "success" });
+            commit(SET_AUTH, { data: user });
           } else {
-            resolve({
-              success: false,
-              message: res.data.message || "Gagal coba lagi nanti!"
-            });
+            resolve({ user: {}, success: false, message: "failed" });
           }
         })
-        .catch(e => {
-          resolve({
-            success: false,
-            message: e || "Gagal coba lagi nanti!"
-          });
+        .catch(error => {
+          resolve({ user: {}, success: false, message: error.message });
         });
     });
   },
@@ -74,28 +57,25 @@ const actions = {
    *
    */
   [LOGOUT]({ commit }) {
-    commit(PURGE_AUTH);
+    return new Promise(resolve => {
+      auth
+        .signOut(() => {
+          commit(PURGE_AUTH, {});
+          resolve({ success: true, message: "" });
+        })
+        .catch(() => {
+          resolve({ success: false, message: "" });
+        });
+    });
   }
 };
 
 const mutations = {
-  [SET_ERROR](state, { error, message }) {
-    state.error = error;
-    state.message = message;
-  },
   [SET_AUTH](state, data) {
-    state.isAuthenticated = true;
-    state.user = data.data;
-    state.errors = {};
     JwtService.setUser(data.data);
-    JwtService.saveToken(data.token);
   },
   [PURGE_AUTH](state) {
-    state.isAuthenticated = false;
-    state.user = {};
-    state.errors = {};
     JwtService.dropUser();
-    JwtService.destroyToken();
   }
 };
 

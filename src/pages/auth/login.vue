@@ -40,16 +40,16 @@
                       <form class="theme-form" @submit.prevent="signUp">
                         <h4>Sign in to account</h4>
                         <p>Enter your email & password to login</p>
-                        <div class="alert alert-info">
+                        <!-- <div class="alert alert-info">
                           Email: test@admin.com<br />
                           Password: test@123456
-                        </div>
+                        </div> -->
                         <div class="form-group">
                           <label class="col-form-label">Email Address</label>
                           <input
                             v-model="email"
                             class="form-control"
-                            type="text"
+                            type="email"
                             required=""
                             placeholder="Test@gmail.com"
                             :class="{
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-
+import { ACTION_LOGIN } from "@/store/index";
 export default {
   name: "login",
   data() {
@@ -135,14 +135,8 @@ export default {
       submitted: false,
     };
   },
-  computed: {
-    // JWT authentication
-    loggingIn() {
-      return false; // this.$store.state.authentication.status.loggingIn;
-    },
-  },
   created() {
-    // reset login status for JWT
+    console.log(this.$store);
   },
   methods: {
     // show/hide password
@@ -157,20 +151,20 @@ export default {
     signUp: function () {
       this.submitted = true;
       if (this.email != "" && this.password != "") {
-        
-            
-               this.$toasted.show(`${message}`, {
-                theme: "bubble",
-                position: "top-right",
-                type: 'success',
-                duration: 2000,
-              });
-
-           
-              
-              return this.$router.push({ name: "dashboard" });
-          
-         
+        this.$store
+          .dispatch(ACTION_LOGIN, {
+            email: this.email,
+            password: this.password,
+          })
+          .then(({ success, user, message }) => {
+            this.$toasted.show(`${message}`, {
+              theme: "bubble",
+              position: "top-right",
+              type: success ? "success" : "error",
+              duration: 2000,
+            });
+            if (success) return this.$router.push({ path: "/main" });
+          });
       }
     },
   },

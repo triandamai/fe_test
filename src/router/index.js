@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import ApiService from "../services/api.service";
-import { getUser } from "../services/jwt.service";
+import { getUser } from "@/services/jwt.service";
 
 // component
 
@@ -11,15 +10,16 @@ const routes = [
   { path: "", redirect: { name: "dashboard" } },
   {
     path: "/main",
-    component: () => import("../components/body"),
+    component: () => import("@/components/body"),
     meta: {
       reqiresAuth: true
     },
     children: [
+      { path: "", redirect: { name: "dashboard" } },
       {
-        path: "",
+        path: "dashboard",
         name: "dashboard",
-        component: () => import("../pages/dashboard/dashboard.vue"),
+        component: () => import("@/pages/dashboard/dashboard.vue"),
         meta: {
           title: "Default Dashboard | Endless - Premium Admin Template",
           reqiresAuth: true
@@ -27,9 +27,15 @@ const routes = [
       },
       //
       {
+        path: "list",
+        name: "list",
+        component: () => import("@/pages/list/list.vue")
+      },
+      //
+      {
         path: "soal",
         name: "soal",
-        component: () => import("../pages/soal/soal.vue"),
+        component: () => import("@/pages/soal/soal.vue"),
         meta: {
           title: "Default Dashboard | Endless - Premium Admin Template",
           reqiresAuth: true
@@ -38,7 +44,7 @@ const routes = [
       {
         path: "soal/add",
         name: "addsoal",
-        component: () => import("../pages/soal/addsoal.vue"),
+        component: () => import("@/pages/soal/addsoal.vue"),
         meta: {
           title: "Nasabah | Add",
           reqiresAuth: true
@@ -47,7 +53,7 @@ const routes = [
       {
         path: "soal/edit/:id",
         name: "editsoal",
-        component: () => import("../pages/soal/addsoal.vue"),
+        component: () => import("@/pages/soal/addsoal.vue"),
         meta: {
           title: "Nasabah | Add",
           reqiresAuth: true
@@ -58,7 +64,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("../pages/auth/login.vue")
+    component: () => import("@/pages/auth/login.vue")
   }
 ];
 
@@ -73,6 +79,15 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  const user = getUser();
+  if (to.meta.title) document.title = to.meta.title;
+  if (to.meta.reqiresAuth) {
+    if (user) {
+      next();
+    } else {
+      next({ path: "/login" });
+    }
+  }
   next();
 });
 

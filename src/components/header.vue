@@ -212,8 +212,8 @@
 <script>
 var body = document.getElementsByTagName("body")[0];
 import { mapState } from "vuex";
-import { getUser } from "../services/jwt.service";
-import { LOGOUT } from "../store/modules/auth";
+import { getUser } from "@/services/jwt.service";
+import { ACTION_LOGOUT } from "@/store/index";
 // import Bookmark from "./bookmark";
 export default {
   name: "Search",
@@ -242,9 +242,7 @@ export default {
   // },
   created() {
     const user = getUser();
-    this.username = user.username;
-    this.role = user.role[0].name;
-    this.group = user.group[0].name;
+    this.username = user.email.replace("@gmail.com", "");
   },
   computed: {
     ...mapState({
@@ -325,7 +323,7 @@ export default {
       this.$store.dispatch("layout/setLayout", val);
     },
     logOut() {
-      this.$store.dispatch(`auth/${LOGOUT}`).then(() => {
+      this.$store.dispatch(ACTION_LOGOUT).then(() => {
         this.$router.replace({ name: "login" });
       });
     },

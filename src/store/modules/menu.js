@@ -1,5 +1,4 @@
-import Menu from "../../data/menu";
-import ApiServices from "../../services/api.service";
+import Menu from "@/data/menu";
 
 const state = {
   data: Menu.data,
@@ -105,39 +104,6 @@ const actions = {
   },
   setActiveRoute: (context, item) => {
     context.commit("setActiveRoute", item);
-  },
-  getMenu: ({ commit }) => {
-    return new Promise(resolve => {
-      ApiServices.get(`/route`)
-        .then(res => {
-          if (res.status == 201 || res.status == 200) {
-            resolve({ success: true, message: "sukses" });
-            commit("setMenu", res.data.data);
-          } else {
-            resolve({ success: false, message: res });
-            commit("setMenu", Menu.data);
-          }
-        })
-        .catch(e => {
-          resolve({ success: false, message: e });
-          commit("setMenu", Menu.data);
-        });
-    });
-  },
-  updateMenu: (ctx, menu) => {
-    return new Promise(resolve => {
-      ApiServices.post(`/route`, { menu: menu })
-        .then(res => {
-          if (res.status == 200 || res.status == 201) {
-            resolve({ success: true, message: "sukses" });
-          } else {
-            resolve({ success: false, message: "sukses" });
-          }
-        })
-        .catch(e => {
-          resolve({ success: false, message: "sukses" });
-        });
-    });
   }
 };
 

@@ -11,7 +11,18 @@
       ]
     },
     {
-      "path": "/main/soal",
+      "path": "/main/dashboard",
+      "title": "Dashboard",
+      "icon": "git-pull-request",
+      "type": "link",
+      "active": false,
+      "idx": 2,
+      "privilage": [
+        ""
+      ]
+    },
+    {
+      "path": "/main/list",
       "title": "Soal Test",
       "icon": "git-pull-request",
       "type": "link",

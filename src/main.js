@@ -18,19 +18,15 @@ import VueFeather from "vue-feather";
 import VueApexCharts from "vue-apexcharts";
 import FunctionalCalendar from "vue-functional-calendar";
 import vueKanban from "vue-kanban";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
 
-import FormNasabah from "./components/form_nasabah.vue";
+//build components
 import DataTable from "./components/datatable.vue";
-
-Vue.component("form-nasabah", FormNasabah);
-Vue.component("data-table", DataTable);
-
-//
-import PxCard from "./components/Pxcard.vue";
-Vue.component(PxCard.name, PxCard);
-
-import { Icon } from "leaflet";
-delete Icon.Default.prototype._getIconUrl;
+import card from "@/components/cardlist.vue";
+import FormList from "@/components/form_list.vue";
 
 // Multi Language Add
 import en from "./locales/en.json";
@@ -43,10 +39,22 @@ import "./assets/scss/app.scss";
 
 import vuetify from "./plugins/vuetify";
 import "@babel/polyfill";
-// api services
-import ApiService from "./services/api.service";
+// config for firebase
+import config from "./config.json";
 
-ApiService.init();
+//
+import PxCard from "./components/Pxcard.vue";
+Vue.component(PxCard.name, PxCard);
+
+import { Icon } from "leaflet";
+delete Icon.Default.prototype._getIconUrl;
+
+Vue.component("data-table", DataTable);
+Vue.component("card-list", card);
+Vue.component("form-list", FormList);
+
+Vue.component("Breadcrumbs", Breadcrumbs);
+Vue.component("apexchart", VueApexCharts);
 
 Vue.use(VueFeather);
 
@@ -71,9 +79,7 @@ Vue.use(BootstrapVue);
 Vue.use(SmartTable);
 Vue.use(require("vue-chartist"));
 Vue.use(require("vue-moment"));
-Vue.component("Breadcrumbs", Breadcrumbs);
 Vue.use(VueMasonryPlugin);
-Vue.component("apexchart", VueApexCharts);
 Vue.use(FunctionalCalendar, {
   dayNames: ["M", "T", "W", "T", "F", "S", "S"]
 });
@@ -94,6 +100,12 @@ const i18n = new VueI18n({
 });
 
 Vue.config.productionTip = false;
+firebase.initializeApp(config.firebase);
+
+export const db = firebase.firestore();
+export const auth = firebase.auth();
+export const storage = firebase.storage();
+
 new Vue({
   i18n,
   router,

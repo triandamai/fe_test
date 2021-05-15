@@ -104,7 +104,6 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import draggable from "vuedraggable";
 
 export default {
   data() {
@@ -116,9 +115,7 @@ export default {
       bookmarkItems: [],
     };
   },
-  components: {
-    draggable,
-  },
+  components: {},
   computed: {
     ...mapState({
       menuItems: (state) => state.menu.data,
@@ -135,11 +132,10 @@ export default {
   methods: {
     openbookmark() {
       this.bookmarkSearchBox = !this.bookmarkSearchBox;
-      if(!this.bookmarkSearchBox)
-        this.removeFix()
+      if (!this.bookmarkSearchBox) this.removeFix();
     },
     searchTerm: function () {
-      this.addFix()
+      this.addFix();
       this.$store.dispatch("menu/searchTerm", this.terms);
     },
     addFix() {
