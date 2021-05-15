@@ -1,0 +1,16 @@
+{
+    "auth0": {
+        "domain": "YOUR DOMAIN NAME",
+        "clientID": "YOUR clientID"
+    },
+    "firebase": {
+        "apiKey": "AIzaSyBOo-s1-i_BcxU4EobnITuFW92wUVxWt2Q",
+        "authDomain": "myproject-64aac.firebaseapp.com",
+        "databaseURL": "https://myproject-64aac.firebaseio.com",
+        "projectId": "myproject-64aac",
+        "storageBucket": "myproject-64aac.appspot.com",
+        "messagingSenderId": "264573731963",
+        "appId": "1:264573731963:web:482782dd1936b670be4ede",
+        "measurementId": "G-WT8BSDW7L3"
+    }
+}
