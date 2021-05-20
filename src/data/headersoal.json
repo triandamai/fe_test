@@ -1,0 +1,30 @@
+[
+    {
+        "text": "Soal",
+        "value": "question"
+    },
+    {
+        "text": "Opsi A",
+        "value": "a"
+    },
+    {
+        "text": "Opsi B",
+        "value": "b"
+    },
+    {
+        "text": "Opsi C",
+        "value": "c"
+    },
+    {
+        "text": "Opsi D",
+        "value": "d"
+    },
+    {
+        "text": "Jawaban",
+        "value": "answer"
+    },
+    {
+        "text": "Aksi",
+        "value": "action"
+    }
+]
