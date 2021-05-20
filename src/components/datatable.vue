@@ -4,6 +4,9 @@
       <v-btn v-show="!hideadd" @click="$emit('add', true)" outlined small
         >Tambah</v-btn
       >
+      <v-btn v-show="!hideadd" @click="$emit('import', true)" outlined small
+        >Import</v-btn
+      >
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"

@@ -91,30 +91,36 @@
       </div>
     </div>
     <!-- Container-fluid Ends-->
-    <form-list :show="show" @close="show = !show" />
+    <form-list :show="show" @close="show = !show" @submit="onSubmit" />
   </div>
 </template>
 
 <script>
+import {
+  ACTION_SAVE_CATEGORY,
+  ACTION_GET_CATEGORY,
+  ACTION_SAVE_SOAL,
+} from "@/store/index";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       show: false,
-      allprojects: [
-        {
-          id: 1,
-          title: "Endless admin Design",
-          badge: "Doing",
-          type: "primary",
+      // allprojects: [
+      //   {
+      //     id: 1,
+      //     title: "Endless admin Design",
+      //     badge: "Doing",
+      //     type: "primary",
 
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-          soal: "24",
-          jumlah_selesai: "3",
-          like: "10",
-          progress: "70",
-        },
-      ],
+      //     desc:
+      //       "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      //     soal: "24",
+      //     jumlah_selesai: "3",
+      //     like: "10",
+      //     progress: "70",
+      //   },
+      // ],
       doingprojects: [
         {
           id: 4,
@@ -173,10 +179,33 @@ export default {
       ],
     };
   },
-
+  created() {
+    this.getCategory();
+  },
+  computed: {
+    ...mapState({
+      allprojects: (state) => state.soal.category.data,
+    }),
+  },
   methods: {
-    getImgUrl(path) {
-      // return require("@/assets/images/" + path);
+    getCategory() {
+      this.$store.dispatch(ACTION_GET_CATEGORY).then(() => {});
+    },
+    onSubmit(data) {
+      this.$store
+        .dispatch(ACTION_SAVE_CATEGORY, data.form)
+        .then(({ success, message, value }) => {
+          this.show = false;
+          this.$toasted.show(`${message}`, {
+            theme: "bubble",
+            position: "top-right",
+            type: success ? "success" : "error",
+            duration: 2000,
+          });
+          if (data.create) {
+            this.$router.push({ path: `/main/soal/${value.id}` });
+          }
+        });
     },
   },
 };

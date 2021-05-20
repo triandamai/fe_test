@@ -77,7 +77,10 @@ export default {
   },
   methods: {
     submit() {
-      this.$emit("submit", this.form);
+      this.$emit("submit", {
+        create: this.checkbox ? true : false,
+        form: this.form,
+      });
     },
   },
 };

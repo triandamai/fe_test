@@ -14,9 +14,10 @@
             </div>
             <div class="card-body">
               <data-table
-                :items="nasabah"
+                :items="items"
                 :headers="headers"
-                @add="$router.push({ name: 'addnasabah' })"
+                @add="show = !show"
+                @import="importsoal = !importsoal"
                 @edit="onChange"
                 @delete="onDelete"
               />
@@ -26,29 +27,56 @@
       </div>
     </div>
     <!-- Container-fluid Ends-->
+    <form-soal
+      :show="show"
+      @close="show = !show"
+      :body="body"
+      @submit="onSubmit"
+    />
+    <form-soal-excel
+      :show="importsoal"
+      @close="importsoal = !importsoal"
+      body=""
+      @submit="onBatch"
+    />
   </div>
 </template>
 
 <script>
-import header from "../../data/headernasabah.json";
+import header from "../../data/headersoal.json";
 
 import { mapState } from "vuex";
+import {
+  ACTION_SAVE_SOAL,
+  ACTION_GET_SOAL,
+  ACTION_DELETE_SOAL,
+} from "@/store/index";
 export default {
   data: () => {
     return {
+      show: false,
+      importsoal: false,
       headers: header,
-      nasabah: [],
+      body: {},
     };
   },
   computed: {
-    ...mapState({}),
+    ...mapState({
+      items: (state) => state.soal.soal.data,
+    }),
   },
-  created() {},
+  created() {
+    this.getSoal();
+  },
   methods: {
-    onChange(nasabah) {
-      this.$router.push({ path: `soal/edit/${nasabah.id}` });
+    getSoal() {
+      this.$store.dispatch(ACTION_GET_SOAL).then(() => {});
     },
-    onDelete(nasabah) {
+    onChange(soal) {
+      this.show = true;
+      this.body = soal;
+    },
+    onDelete(soal) {
       this.$swal({
         text: `Hapus ?`,
         showCancelButton: true,
@@ -59,7 +87,40 @@ export default {
         reverseButtons: true,
       }).then(({ value }) => {
         if (value) {
+          this.$store
+            .dispatch(ACTION_DELETE_SOAL, soal)
+            .then(({ success, message }) => {
+              this.$toasted.show(`${message}`, {
+                theme: "bubble",
+                position: "top-right",
+                type: success ? "success" : "error",
+                duration: 2000,
+              });
+            });
         }
+      });
+    },
+    onSubmit(data) {
+      this.$store
+        .dispatch(ACTION_SAVE_SOAL, data)
+        .then(({ success, message }) => {
+          this.$toasted.show(`${message}`, {
+            theme: "bubble",
+            position: "top-right",
+            type: success ? "success" : "error",
+            duration: 2000,
+          });
+        });
+    },
+    onBatch(form) {
+      form.map((data) => {
+        this.$store.dispatch(ACTION_SAVE_SOAL, data).then(() => {});
+      });
+      this.$toasted.show(`Berhasil`, {
+        theme: "bubble",
+        position: "top-right",
+        type: "success",
+        duration: 2000,
       });
     },
   },

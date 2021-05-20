@@ -8,7 +8,11 @@
     <p>{{ project.desc }}</p>
     <div class="row details">
       <div class="col-6">
-        <span><router-link to="/main/soal">Jumlah Soal</router-link> </span>
+        <span
+          ><router-link :to="`/main/soal/${project.id}`"
+            >Jumlah Soal</router-link
+          >
+        </span>
       </div>
       <div class="col-6 text-primary" :class="'text-' + project.type">
         {{ project.soal }}

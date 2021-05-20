@@ -29,33 +29,19 @@ const routes = [
       {
         path: "list",
         name: "list",
-        component: () => import("@/pages/list/list.vue")
-      },
-      //
-      {
-        path: "soal",
-        name: "soal",
-        component: () => import("@/pages/soal/soal.vue"),
+        component: () => import("@/pages/list/list.vue"),
         meta: {
           title: "Default Dashboard | Endless - Premium Admin Template",
           reqiresAuth: true
         }
       },
+      //
       {
-        path: "soal/add",
-        name: "addsoal",
-        component: () => import("@/pages/soal/addsoal.vue"),
+        path: "soal/:id",
+        name: "soal",
+        component: () => import("@/pages/soal/soal.vue"),
         meta: {
-          title: "Nasabah | Add",
-          reqiresAuth: true
-        }
-      },
-      {
-        path: "soal/edit/:id",
-        name: "editsoal",
-        component: () => import("@/pages/soal/addsoal.vue"),
-        meta: {
-          title: "Nasabah | Add",
+          title: "Default Dashboard | Endless - Premium Admin Template",
           reqiresAuth: true
         }
       }

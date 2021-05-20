@@ -27,6 +27,8 @@ import "firebase/storage";
 import DataTable from "./components/datatable.vue";
 import card from "@/components/cardlist.vue";
 import FormList from "@/components/form_list.vue";
+import FormSoal from "@/components/form_soal.vue";
+import FormExcel from "@/components/form_soal_excel.vue";
 
 // Multi Language Add
 import en from "./locales/en.json";
@@ -52,7 +54,8 @@ delete Icon.Default.prototype._getIconUrl;
 Vue.component("data-table", DataTable);
 Vue.component("card-list", card);
 Vue.component("form-list", FormList);
-
+Vue.component("form-soal", FormSoal);
+Vue.component("form-soal-excel", FormExcel);
 Vue.component("Breadcrumbs", Breadcrumbs);
 Vue.component("apexchart", VueApexCharts);
 
